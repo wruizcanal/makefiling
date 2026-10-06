@@ -1,5 +1,5 @@
 {
-  "exercise": "00_getting_started/01_first_rule",
+  "exercise": "00 getting started/01 first rule",
   "title": "The simplest Makefile",
   "objective": "Write a rule that prints Hello, World when make runs.",
   "reference": "Running the Examples",
@@ -7,29 +7,29 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "make runs the only target",
       "exit_code": 0,
       "stdout": "echo \"Hello, World\"\nHello, World",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "hello"
+        "Make",
+        "Hello"
       ],
       "description": "naming the target explicitly does the same thing",
       "exit_code": 0,
       "stdout": "echo \"Hello, World\"\nHello, World",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -37,13 +37,13 @@
   ],
   "lesson": {
     "order": 1,
-    "goal": "让 make 执行一条最简单的 recipe。",
-    "prediction": "运行 make 会读取哪个目标？终端会先显示命令，还是只显示命令的输出？",
+    "goal": "Let make execute the simplest recipe.",
+    "prediction": "Which target will be read when running make? Does the terminal display the command first, or only the output of the command?",
     "hints": [
-      "规则由目标行和 recipe 组成：hello: 下一行才是要执行的命令。",
-      "recipe 行必须以真正的 TAB 开头。",
-      "把 echo 命令放在 hello: 下方，并用 TAB 缩进。"
+      "The rule consists of the target line and recipe: hello: The next line is the command to be executed.",
+      "The recipe line must start with a real TAB.",
+      "Place the echo command below hello: and indent it with TAB."
     ],
-    "explanation": "make 默认构建第一个目标；recipe 会先被回显，再交给 shell 执行。"
+    "explanation": "make builds the first target by default; the recipe will be echoed first and then handed over to the shell for execution."
   }
 }

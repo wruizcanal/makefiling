@@ -1,5 +1,5 @@
 {
-  "exercise": "02_quick_examples/03_touching_an_intermediate_file",
+  "exercise": "02 quick examples/03 touching an intermediate file",
   "title": "Touching an intermediate file rebuilds part of the chain",
   "objective": "Give blah.o its blah.c prerequisite so that touching either file rebuilds exactly as much as it has to.",
   "reference": "More quick examples",
@@ -7,111 +7,111 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the object is compiled before the program is linked",
       "exit_code": 0,
       "stdout": "cc -c blah.c -o blah.o\ncc blah.o -o blah",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "202001010000",
-        "blah.o",
-        "blah"
+        "Blah.o",
+        "Blah"
       ],
       "description": "age the object and the program",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "202101010000",
-        "blah.c"
+        "Blah.c"
       ],
       "description": "pretend the source was edited, newer than both",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a newer source recompiles and the fresh object relinks",
       "exit_code": 0,
       "stdout": "cc -c blah.c -o blah.o\ncc blah.o -o blah",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "202001010000",
-        "blah"
+        "Blah"
       ],
       "description": "age the program",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "202101010000",
-        "blah.o"
+        "Blah.o"
       ],
       "description": "pretend only the object was touched, newer than the program",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a newer object relinks the program and runs nothing else",
       "exit_code": 0,
       "stdout": "cc blah.o -o blah",
-      "stdout_mode": "exact",
+      "stdout_mode": "Exact",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -119,13 +119,13 @@
   ],
   "lesson": {
     "order": 14,
-    "goal": "观察只重建受影响的链段。",
-    "prediction": "只更新 blah.o 时，blah.c 会重新编译吗？",
+    "goal": "Observe that only the affected chain segments are rebuilt.",
+    "prediction": "Will blah.c be recompiled when only blah.o is updated?",
     "hints": [
-      "blah.o 必须声明 blah.c 依赖。",
-      "最终目标 blah 依赖 blah.o。",
-      "比较每次输出，找出没有重新执行的 recipe。"
+      "blah.o must declare blah.c as a dependency.",
+      "The final goal blah depends on blah.o.",
+      "Compare each output to find recipes that have not been re-executed."
     ],
-    "explanation": "增量构建只执行从过期节点到最终目标所需的那部分 recipe。"
+    "explanation": "Incremental builds only execute the portion of the recipe required to get from the expired node to the final target."
   }
 }

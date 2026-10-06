@@ -1,5 +1,5 @@
 {
-  "exercise": "00_getting_started/05_which_makefile",
+  "exercise": "00 getting started/05 which makefile",
   "title": "Which file does make read?",
   "objective": "Give GNUmakefile and Makefile different default goals and confirm which one a bare make picks up.",
   "reference": "Running the Examples",
@@ -7,46 +7,46 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a bare make prefers GNUmakefile",
       "exit_code": 0,
       "stdout": "from GNUmakefile",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "-f",
+        "Make",
+        "F",
         "Makefile"
       ],
       "description": "make -f reads the named file",
       "exit_code": 0,
       "stdout": "from Makefile",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "-f",
-        "GNUmakefile"
+        "Make",
+        "F",
+        "Gn umakefile"
       ],
       "description": "the GNUmakefile can still be named explicitly",
       "exit_code": 0,
       "stdout": "from GNUmakefile",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -54,13 +54,13 @@
   ],
   "lesson": {
     "order": 5,
-    "goal": "知道 make 如何选择 Makefile。",
-    "prediction": "目录中同时存在 GNUmakefile 和 Makefile 时，裸 make 读取谁？",
+    "goal": "Know how make selects Makefiles.",
+    "prediction": "When both GNUmakefile and Makefile exist in the directory, who does bare make read?",
     "hints": [
-      "GNU Make 有固定的文件名搜索顺序。",
-      "make -f 文件名可以跳过默认搜索。",
-      "让两个文件输出不同文本，再用三条检查命令比较。"
+      "GNU Make has a fixed filename search order.",
+      "make -f filename can skip the default search.",
+      "Let the two files output different text, and then use three check commands to compare."
     ],
-    "explanation": "GNUmakefile 的优先级高于 makefile 和 Makefile；-f 可以显式指定。"
+    "explanation": "GNUmakefile has higher priority than makefile and Makefile; -f can be specified explicitly."
   }
 }

@@ -1,211 +1,211 @@
-# 架构
+# Architecture
 
-`makefiling` 由四个互相独立的层次组成：
+`makefiling` consists of four independent layers:
 
 ```text
-规格层 (tools/specs_*.py)
+Specification layer (tools/specs_*.py)
         │
         ▼
-生成层 (tools/generate_exercises.py)
+Generate layers (tools/generate_exercises.py)
         │
-        ├── exercises/   初始练习
-        ├── templates/   原始练习，用于 reset
-        ├── solutions/   参考答案
-        └── docs/        课程映射
-        │
-        ▼
-契约层 (每个练习目录里的 checks.json)
+        ├── exercises/ initial exercises
+        ├── templates/ original exercise, used for reset
+        ├── solutions/ reference answers
+        └── docs/ course mapping
         │
         ▼
-运行层 (./makefiling)
+Contract layer (checks.json in each exercise directory)
         │
-        ├── 发现练习
-        ├── 隔离编排到 build/makefiling/
-        ├── 重放契约中的每一步
-        ├── 记录进度
-        └── verify / selftest
+        ▼
+Runtime layer (./makefiling)
+        │
+        ├── Discovery Exercise
+        ├── Isolate and arrange to build/makefiling/
+        ├── Replay every step in the contract
+        ├── Record progress
+        └── verify/selftest
 ```
 
-## 为什么被测对象不是 C 程序
+## Why the object under test is not a C program
 
-`clings` 和 `lspling` 的练习是 C 程序，测试代码可以写在同一个文件里，
-由一个很小的断言头文件驱动。Makefile 练习没有这个便利：被测的对象是
-**make 本身的行为**——它打印什么、以什么退出码结束、留下了哪些文件。
+The exercises for `clings` and `lspling` are C programs, and the test code can be written in the same file.
+Driven by a small assertion header file. The Makefile exercise does not have this convenience: the object being tested is
+**The behavior of make itself** - what it prints, what exit code it ends with, what files it leaves behind.
 
-因此 `makefiling` 把每个练习的验收条件抽出来，写成一个数据文件：
+Therefore `makefiling` extracts the acceptance criteria for each exercise and writes them into a data file:
 
 ```text
 exercises/<topic>/<slug>/checks.json
 ```
 
-它列出了若干步骤，每一步是一条命令加上对结果的期望。运行器只是这个
-文件的解释器。这样做有三个好处：
+It lists a number of steps, each step being a command plus an expectation for the result. The runner is just this
+File interpreter. There are three benefits to doing this:
 
-- 期望值是**数据**，不是代码，可以被生成、被 diff、被 `--check` 校验。
-- 一个练习可以有任意多步，因此可以表达「先构建、再重新构建、观察
-  第二次什么都不做」这类只有跨命令才能观察到的行为。
-- 断言不限于标准输出，还包括退出码、stderr、以及命令结束后磁盘上
-  该有哪些文件、不该有哪些文件。
+- The expected value is **data**, not code, and can be generated, diffed, and verified by `--check`.
+- An exercise can have any number of steps, so it can mean "Build first, then re-build, then observe."
+  The second time does nothing" is a behavior that can only be observed across commands.
+- Assertions are not limited to standard output, but also include exit codes, stderr, and the disk after the command ends.
+  What documents should be included and what documents should not be included.
 
-## 规格驱动生成
+## Specification driven generation
 
-每个练习的正确版本和初始版本来自同一份规格。生成器对正确内容应用
-`breaks` 替换，得到初始练习。这样做的好处是：
+The correct and initial versions of each exercise come from the same specification. The generator is applied to the correct content
+Replaced with `breaks` to get initial exercises. The benefits of doing this are:
 
-- 修改正确内容时，初始练习自动同步。
-- 参考答案和练习的验收条件完全一致。
-- `./makefiling selftest` 可以自动检查「仓库中的原始模板失败、答案通过」这一不变量，
-  不会读取学习者当前正在编辑的 `exercises/` 副本。
-- 初始练习一定会失败，因为 `breaks` 至少替换掉一处；如果某次替换恰好
-  没让任何检查失败，`selftest` 会报错。
+- When correct content is modified, the initial exercises are automatically synchronized.
+- The acceptance criteria for the reference answers and exercises are exactly the same.
+- `./makefiling selftest` can automatically check the invariant "the original template in the warehouse failed and the answer passed",
+  The copy of `exercises/` currently being edited by the learner will not be read.
+- The initial exercise will definitely fail because `breaks` replaces at least one place; if a replacement happens
+  If no checks fail, `selftest` will report an error.
 
-`tools/generate_exercises.py --check` 用于 CI：如果生成文件与规格不一致，
-CI 会失败。`exercises/`、`solutions/`、`templates/`、各专题 `README.md`
-和 `docs/curriculum.md` 都是生成产物，不要手工修改。
+`tools/generate_exercises.py --check` for CI: if the generated file is inconsistent with the specification,
+CI will fail. `exercises/`, `solutions/`, `templates/`, each topic `README.md`
+and `docs/curriculum.md` are generated products, do not modify them manually.
 
-只想重新生成一个专题时用 `--topic`：
+Use `--topic` when you just want to regenerate a topic:
 
 ```sh
 python3 tools/generate_exercises.py --topic 03_variables
 ```
 
-`--topic` 只导入对应的那个规格文件，因此多个专题可以并行编写。
+`--topic` only imports the corresponding specification file, so multiple topics can be written in parallel.
 
-## 运行器
+## Runner
 
-`./makefiling` 是一个零依赖 Python CLI。它的主要命令：
+`./makefiling` is a zero-dependency Python CLI. Its main commands:
 
-| 命令 | 作用 |
+| Command | Function |
 | --- | --- |
-| `start` | 进入 20 题基础路线 |
-| `list [--basic]` | 按专题列出练习和完成状态 |
-| `next [--basic]` | 显示下一个未完成练习 |
-| `run [exercise]` | 在隔离目录里运行练习并核对契约 |
-| `run --all/--basic` | 按顺序运行一组练习 |
-| `hint [--level 1..3]` | 显示分级提示和第一性原理问题 |
-| `hint --steps` | 同时打印这个练习的完整检查契约 |
-| `solution` | 打印或应用参考答案 |
-| `reset` | 从 `templates/` 恢复初始练习 |
-| `watch` | 文件变化后自动重跑 |
-| `verify [exercise]` | 运行全部（或指定）参考答案 |
-| `selftest` | 检查不可变的原始模板失败、答案通过 |
-| `doctor` | 打印 Python 和 make 等工具链信息 |
-| `clean` | 删除 `build/makefiling/` |
+| `start` | Enter the 20-question basic route |
+| `list [--basic]` | List exercises and completion status by topic |
+| `next [--basic]` | Display the next unfinished exercise |
+| `run [exercise]` | Run the exercise in the isolation directory and check the contract |
+| `run --all/--basic` | Run a set of exercises in sequence |
+| `hint [--level 1..3]` | Display grading hints and first principles questions |
+| `hint --steps` | Also prints the complete check contract for this exercise |
+| `solution` | Print or apply reference answer |
+| `reset` | Restore initial exercise from `templates/` |
+| `watch` | Automatically rerun after file changes |
+| `verify [exercise]` | Run all (or specified) reference answers |
+| `selftest` | Check for immutable original template fails, answer passes |
+| `doctor` | Print tool chain information such as Python and make |
+| `clean` | Remove `build/makefiling/` |
 
-进度保存在 `.makefiling/progress.json`，该文件已被 `.gitignore` 忽略。
+Progress is saved in `.makefiling/progress.json`, which is ignored by `.gitignore`.
 
-## 隔离编排
+## Isolation Orchestration
 
-运行器**不在** `exercises/` 里直接跑 make。每次运行都会把练习目录复制到
+The runner does not run make directly in `exercises/`. Each run will copy the exercise directory to
 
 ```text
-build/makefiling/<topic>/<slug>/run-<随机后缀>/
+build/makefiling/<topic>/<slug>/run-<random suffix>/
 ```
 
-再在那里执行契约中的步骤。这样做解决了三个问题：
+Then execute the steps in the contract there. Doing this solves three problems:
 
-- 学习者的 `exercises/` 目录不会被 `make` 产生的 `.o`、可执行文件、
-  中间文件污染；git 只会看到学习者对练习文件本身的编辑。
-- 契约可以包含「第一次运行」和「第二次运行」，因为每次运行都从干净的
-  副本开始，不会受上一次运行的残留影响。
-- 顺序执行的多个步骤之间又确实共享状态（构建之后重新构建），这正是
-  表达增量行为所需要的。
-- 每次运行使用独立的临时目录，因此 `verify`、`selftest` 和多个终端可以
-  并行运行，不会互相删除 staging 目录。
+- The learner's `exercises/` directory will not be used by `.o`, executable files, etc. generated by `make`.
+  Intermediate file contamination; git will only see edits made by learners to the exercise files themselves.
+- Contracts can contain "first run" and "second run" because each run starts from a clean
+  The copy starts without any residual effects from the previous run.
+- Multiple steps executed sequentially do share state (build after build), which is exactly what
+  Required to express incremental behavior.
+- Use separate temporary directories for each run, so `verify`, `selftest` and multiple terminals can
+  Run in parallel without deleting each other's staging directories.
 
-失败时运行器会打印被保留的工作目录路径、失败步骤和可复制的重试命令，
-并在检测到 `missing separator` 时指出 recipe 必须使用真正的 TAB。成功的
-临时目录也会保留到 `./makefiling clean`，便于观察生成的文件。
+On failure, the runner will print the preserved working directory path, failure step, and reproducible retry commands.
+And indicates that the recipe must use a real TAB when a `missing separator` is detected. successful
+The temporary directory will also be kept to `./makefiling clean` for easy viewing of generated files.
 
-## 时间戳
+## timestamp
 
-make 判断该不该重建，靠的是比较目标和依赖的修改时间，而练习大量依赖这个
-行为：「文件已经存在，所以什么都不用做」「这个依赖更新了，所以要重建」。
-如果这些时间来自真实时钟，结论就取决于文件系统的时间戳粒度——CI runner 上
-粒度是整整一秒，配方写出的目标和它刚读过的依赖可能落在同一刻度里，make 于是
-认为无事可做，断言随机失败。
+Make determines whether it should be rebuilt by comparing the modification time of the target and its dependencies, and practice relying heavily on this
+Behavior: "The file already exists, so nothing needs to be done" "This dependency has been updated, so it needs to be rebuilt."
+If these times come from a real clock, the conclusion depends on the file system's timestamp granularity - CI runner
+The granularity is one full second, and the target written by the recipe and the dependency it just read may fall in the same scale, so make
+Thinking there is nothing to do, assertions fail randomly.
 
-所以 staging 完成后，运行器会把复制出来的每个文件都改成一个固定的、很久以前
-的时间：
+So after staging is completed, the runner will change each copied file to a fixed, long-ago
+time:
 
 ```text
-2000-01-01 00:00:00 起，按路径排序每个文件 +1 秒
+Starting from 2000-01-01 00:00:00, sort each file by path +1 second
 ```
 
-两个效果：
+Two effects:
 
-- **练习自带的文件一律「很旧」**，契约里任何配方写出的文件都严格更新，比较
-  结果不再取决于运行速度，在任何粒度下都成立。按路径排序同时让自带文件之间
-  的相对顺序也确定下来——`copytree` 的顺序本来是 `readdir` 给的，不确定。
-- **时间远在过去**，所以永远不会触发 make 的 clock skew 警告。
+- **The documents that come with the exercise are all "very old"**, and any documents written by recipes in the contract are strictly updated, compare
+  The results no longer depend on running speed and hold at any granularity. Sort by path while keeping the files between
+  The relative order of `copytree` is also determined - the order of `copytree` was originally given by `readdir`, which is uncertain.
+- **The time is far in the past**, so make's clock skew warning will never be triggered.
 
-配方之间需要比较时间时（「把这个文件改成比那个新」），规格必须显式写出两个
-时间，不能用裸 `touch`；写法见
-[CONTRIBUTING.md](../CONTRIBUTING.md#时间戳必须显式指定)。
+When it is necessary to compare times between recipes ("change this file to be newer than that one"), the specifications must explicitly write out two
+Time cannot be used naked `touch`; see the writing method
+[CONTRIBUTING.md](../CONTRIBUTING.md#The timestamp must be specified explicitly).
 
-## 输出规范化
+## Output normalization
 
-为了断言能跨机器成立，运行器在比较之前会规范化输出：
+To ensure that assertions hold across machines, the runner normalizes the output before comparing:
 
-- 把工作目录的绝对路径替换成 `<stage>`。这样 `make -C`、递归 make 的
-  `make[1]: Entering directory ...` 之类的消息就可以稳定断言。
-- 去掉每行末尾的空白，去掉末尾的空行。
-- 以 `LC_ALL=C` 运行，因此 make 自身的消息是英文的。
-- 清空 `MAKEFLAGS`、`MFLAGS`、`MAKELEVEL`，避免外层环境影响结果。
+- Replace the absolute path to the working directory with `<stage>`. This way `make -C`, recursive make
+  Messages such as `make[1]: Entering directory ...` can stabilize the assertion.
+- Remove whitespace at the end of each line, remove empty lines at the end.
+- Run with `LC_ALL=C` so make's own messages are in English.
+- Clear `MAKEFLAGS`, `MFLAGS`, `MAKELEVEL` to avoid external environment affecting the results.
 
-期望值同样经过这套规范化，所以规格里写的是「make 会打印什么」，
-而不是「在某个目录下会打印什么」。
+The expected value has also been standardized by this set, so the specification says "what will make print",
+Rather than "what will be printed in a certain directory".
 
-## 匹配模式
+## Match pattern
 
-每一步都可以为 stdout 和 stderr 各选一种比较方式：
+At each step, you can choose a comparison method for stdout and stderr:
 
-| 模式 | 含义 |
+| Pattern | Meaning |
 | --- | --- |
-| `exact` | 规范化之后完全相等 |
-| `contains` | 输出包含给定文本 |
-| `contains_lines` | 给定文本的每一行都出现，顺序任意 |
-| `ordered_lines` | 给定文本的每一行都按顺序出现 |
-| `regex` | 给定文本是正则表达式，在输出中搜索 |
-| `not_contains` | 输出不包含给定文本 |
+| `exact` | Exactly equal after normalization |
+| `contains` | Output contains the given text |
+| `contains_lines` | Appears on every line of the given text, in any order |
+| `ordered_lines` | Each line of the given text appears in order |
+| `regex` | The given text is a regular expression, searched in the output |
+| `not_contains` | Output does not contain the given text |
 
-默认是 `contains_lines`。规格里应优先使用 `contains` 和 `ordered_lines`，
-只有在确实需要时才用 `exact`：make 的输出里包含命令回显、目录名等
-容易变化的部分，过严的断言会让练习在别的机器上误报失败。
+The default is `contains_lines`. `contains` and `ordered_lines` should be used first in specifications.
+Only use `exact` when you really need it: the output of make includes command echo, directory name, etc.
+For parts that are easy to change, overly strict assertions will cause the exercise to fail falsely on other machines.
 
-`not_contains` 是很有用的一种：它让「第二次运行**没有**重新编译」这类
-否定断言变得直接。
+`not_contains` is a useful one: it allows "second run **without** recompiling" type
+Negative assertions become direct.
 
-## 测试设计约束
+## Test design constraints
 
-Makefile 的输出很容易写出不确定的断言。本项目的约定是：
+It is easy to write undefined assertions in the output of the Makefile. The agreement for this project is:
 
-- 不使用 `date`、`$$RANDOM`、`$$PPID` 之类会变化的输入。
-- 不使用绝对路径，不依赖运行时的当前目录名。
-- 不 `sleep`，不依赖时序；需要观察「文件更新了」时用 `touch` 显式改变
-  时间戳。
-- 不访问网络，不写入 `exercises/`。
-- 只操作编排目录内的文件；临时文件放在编排目录里而不是 `/tmp`，
-  这样 `make clean` 之类的练习可以自己清理。
-- 编译 C 的练习只使用 `int main(void) { return 0; }` 这种平凡源码，
-  目的是观察 make 的行为，而不是测试编译器。
+- Do not use changing inputs such as `date`, `$$RANDOM`, `$$PPID` and the like.
+- Do not use absolute paths and do not rely on the current directory name at runtime.
+- No `sleep`, no reliance on timing; use `touch` to explicitly change when you need to observe "the file has been updated"
+  Timestamp.
+- No network access, no writing to `exercises/`.
+- Only operate files in the arrangement directory; temporary files are placed in the arrangement directory instead of `/tmp`,
+  This way exercises like `make clean` can clean themselves up.
+- The exercise of compiling C only uses trivial source code such as `int main(void) { return 0; }`,
+  The purpose is to observe make's behavior, not to test the compiler.
 
-## 目录约定
+## Directory convention
 
-- `exercises/`：学习者实际编辑的文件。
-- `solutions/`：参考答案，不要在这里练习。
-- `templates/`：初始练习的只读副本，由 `reset` 使用。
-- `tools/specs_*.py`：唯一的练习事实来源。
-- `.ref/`：`makefiletutorial.com` 的离线文本，供编写规格时对照；
-  被 `.gitignore` 忽略。
+- `exercises/`: files actually edited by learners.
+- `solutions/`: refer to the answers, do not practice here.
+- `templates/`: a read-only copy of the initial exercise, used by `reset`.
+- `tools/specs_*.py`: The only source of practice facts.
+- `.ref/`: Offline text of `makefiletutorial.com` for reference when writing specifications;
+  Ignored by `.gitignore`.
 
-如果只想修改一个练习的提示或目标，应修改对应的规格文件，然后运行
-生成器，而不是直接编辑生成的文件。
+If you only want to modify the prompt or goal of an exercise, you should modify the corresponding specification file and then run
+generator instead of editing the generated files directly.
 
-## 规格里的 Tab
+## Tab in specification
 
-Makefile 的 recipe 行必须以真正的 TAB 开头。规格文件是 Python 源码，
-直接嵌入 TAB 字符既不可见也容易在编辑过程中丢失，因此约定：
+Makefile recipe lines must begin with a real TAB. The specification file is Python source code,
+Embedding TAB characters directly is neither visible nor easily lost during editing, so the convention is:
 
 ```python
 makefile="""
@@ -214,8 +214,8 @@ hello:
 """,
 ```
 
-Python 会把 `\t` 转义成真正的 TAB。同理，Makefile 里需要的字面反斜杠
-（例如续行）要写成 `\\`。
+Python will escape `\t` into a real TAB. Similarly, the literal backslash required in the Makefile
+(e.g. line continuation) should be written as `\\`.
 
-如果写错成四个空格，make 会报 `missing separator`，`./makefiling verify`
-会立刻失败——错误不会静默通过。
+If it is written incorrectly with four spaces, make will report `missing separator`, `./makefiling verify`
+Will fail immediately - errors will not pass silently.

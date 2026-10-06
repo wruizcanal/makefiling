@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/01_rule_anatomy",
+  "exercise": "01 syntax and essence/01 rule anatomy",
   "title": "The anatomy of a rule",
   "objective": "Write a rule whose target is report.txt, whose prerequisite is notes.txt, and whose recipe builds the report in two commands.",
   "reference": "Makefile Syntax",
@@ -7,74 +7,74 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "both commands of the recipe run, in order",
       "exit_code": 0,
       "stdout": "echo \"Report\" > report.txt\ncat notes.txt >> report.txt",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "cat",
-        "report.txt"
+        "Cat",
+        "Report.txt"
       ],
       "description": "the first command wrote the header, the second appended the notes",
       "exit_code": 0,
       "stdout": "Report\nalpha\nbeta",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the prerequisite is not newer, so nothing is rebuilt",
       "exit_code": 0,
       "stdout": "make: 'report.txt' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "199001010000",
-        "report.txt"
+        "Report.txt"
       ],
       "description": "put the target in the past, so the prerequisite is the newer file",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a newer prerequisite brings the rule back to life",
       "exit_code": 0,
       "stdout": "echo \"Report\" > report.txt",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -82,13 +82,13 @@
   ],
   "lesson": {
     "order": 7,
-    "goal": "拆开一条规则的目标、前置条件和 recipe。",
-    "prediction": "make report.txt 会先检查 notes.txt，还是直接运行两条命令？",
+    "goal": "Unpack a rule's goals, preconditions, and recipes.",
+    "prediction": "Will make report.txt check notes.txt first, or run the two commands directly?",
     "hints": [
-      "规则头的形式是 target: prerequisites。",
-      "两条 recipe 可以连续写在同一个目标下面。",
-      "第二条命令也必须以 TAB 开头。"
+      "The rule header is of the form target: prerequisites.",
+      "Two recipes can be written consecutively under the same target.",
+      "The second command must also begin with TAB."
     ],
-    "explanation": "目标行描述依赖关系，缩进的每一行才属于 recipe。"
+    "explanation": "Target lines describe dependencies, and each indented line belongs to the recipe."
   }
 }

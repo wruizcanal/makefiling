@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/02_several_targets_one_rule",
+  "exercise": "01 syntax and essence/02 several targets one rule",
   "title": "Several targets on one rule line",
   "objective": "Write a single rule that applies to two target names, so that make can build either one of them.",
   "reference": "Makefile Syntax",
@@ -7,62 +7,62 @@
   "steps": [
     {
       "args": [
-        "make",
-        "two"
+        "Make",
+        "Two"
       ],
       "description": "the second name on the rule line is a target too",
       "exit_code": 0,
       "stdout": "touch one two",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-f",
-        "two"
+        "Test",
+        "F",
+        "Two"
       ],
       "description": "the recipe created the file two",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-f",
-        "one"
+        "Test",
+        "F",
+        "One"
       ],
       "description": "the same recipe created the file one as well",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "one"
+        "Make",
+        "One"
       ],
       "description": "the first name refers to the very same rule",
       "exit_code": 0,
       "stdout": "make: 'one' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -70,13 +70,13 @@
   ],
   "lesson": {
     "order": 8,
-    "goal": "让一条规则服务多个目标名。",
-    "prediction": "分别请求两个目标时，make 是否都能执行同一条 recipe？",
+    "goal": "Have one rule serve multiple target names.",
+    "prediction": "When requesting two targets separately, can make execute the same recipe?",
     "hints": [
-      "多个目标可以写在同一个冒号左侧。",
-      "目标名之间用空格分隔。",
-      "不要把第二个目标写成前置条件。"
+      "Multiple goals can be written to the left of the same colon.",
+      "Target names are separated by spaces.",
+      "Don't write the second goal as a precondition."
     ],
-    "explanation": "同一规则可以为多个目标提供相同的 recipe；目标列表仍在冒号左侧。"
+    "explanation": "The same rule can provide the same recipe to multiple targets; the list of targets remains to the left of the colon."
   }
 }

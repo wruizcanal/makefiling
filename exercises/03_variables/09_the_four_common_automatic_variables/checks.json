@@ -1,5 +1,5 @@
 {
-  "exercise": "03_variables/09_the_four_common_automatic_variables",
+  "exercise": "03 variables/09 the four common automatic variables",
   "title": "$@, $?, $^ and $<",
   "objective": "Print the target name, the out-of-date prerequisites, every prerequisite, and the first prerequisite from one recipe.",
   "reference": "Automatic Variables",
@@ -7,61 +7,61 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "hey does not exist yet, so nothing is up to date",
       "exit_code": 0,
       "stdout": "touch one\ntouch two\ntarget: hey\nnewer: one two\nall: one two\nfirst: one\ntouch hey",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the recipe is skipped on the second run",
       "exit_code": 0,
       "stdout": "make: 'hey' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "clean removes the target and its prerequisites",
       "exit_code": 0,
       "stdout": "rm -f hey one two",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "hey",
-        "one",
-        "two"
+        "Hey",
+        "One",
+        "Two"
       ]
     }
   ],
   "lesson": {
     "order": 18,
-    "goal": "认识 recipe 中最常用的自动变量。",
-    "prediction": "$@、$<、$^、$? 分别代表什么？",
+    "goal": "Understand the most commonly used automatic variables in recipes.",
+    "prediction": "What do $@, $<, $^, $? stand for respectively?",
     "hints": [
-      "$@ 是当前目标，$< 是第一个前置条件。",
-      "$^ 是全部前置条件，$? 是比目标更新的那些。",
-      "自动变量只在 recipe 执行时有意义。"
+      "$@ is the current target and $< is the first precondition.",
+      "$^ are all preconditions, $? are those newer than the target.",
+      "Automatic variables only have meaning when the recipe is executed."
     ],
-    "explanation": "自动变量由 make 根据当前规则上下文填充，不需要手工定义。"
+    "explanation": "Automatic variables are populated by make based on the current rule context and do not need to be defined manually."
   }
 }

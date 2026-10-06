@@ -1,22 +1,22 @@
-# 基础路线：先建立 Make 的心智模型
+#Basic route: first establish the mental model of Make
 
-如果你第一次接触 Make，不要一开始就把 177 道题当成一张考试卷。先用下面
-的 20 题建立一个简单模型：
+If you’re new to Make, don’t treat the 177 questions like a test paper at first. Use the following first
+20 questions to build a simple model:
 
 ```text
-目标 target  <-  前置条件 prerequisites
+target target <- prerequisites prerequisites
                     │
-                    └─ recipe 负责产生目标
+                    └─ recipe is responsible for generating targets
 ```
 
-每次练习都按四步做：
+Follow four steps for each exercise:
 
-1. 先看 `objective`，预测这次 `make` 会执行哪些命令。
-2. 只修改题目要求的文件，然后运行 `./makefiling run`。
-3. 失败时先读 make 的原始 stderr，再运行 `./makefiling hint --level 2`。
-4. 通过后用自己的话解释“为什么这次执行或跳过了 recipe”。
+1. First look at `objective` and predict which commands `make` will execute this time.
+2. Modify only the files required by the question, and then run `./makefiling run`.
+3. If it fails, first read the original stderr of make, and then run `./makefiling hint --level 2`.
+4. After passing, explain in your own words "why the recipe was executed or skipped this time".
 
-启动基础路线：
+Start the basic route:
 
 ```sh
 ./makefiling start
@@ -24,11 +24,11 @@
 ./makefiling run --basic
 ```
 
-基础路线依次经过：第一条规则、默认目标、目标文件、前置条件、依赖链、增量
-构建、变量、自动变量、`.PHONY` 和 `all`。完成后再进入其他专题；那些专题是
-同一个模型的不同抽象，不要求你死记语法。
+The basic route goes through: first rule, default target, target file, preconditions, dependency chain, increment
+Build, variables, automatic variables, `.PHONY` and `all`. Once completed, proceed to other topics; those topics are
+Different abstractions of the same model do not require you to memorize syntax.
 
-需要查看更具体的提示时逐级增加提示级别：
+Increase the prompt level step by step when you need to see more specific prompts:
 
 ```sh
 ./makefiling hint 00_getting_started/01_first_rule --level 1

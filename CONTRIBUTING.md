@@ -1,19 +1,19 @@
-# Contributing
+#Contributing
 
-感谢你愿意改进 `makefiling`。这个项目的核心原则是：
+Thanks for your willingness to improve `makefiling`. The core principles of this project are:
 
-1. 练习必须能用系统自带的 `make` 独立运行，不依赖第三方工具。
-2. 初始状态必须失败；参考答案必须通过。
-3. 每个练习只聚焦一个概念，但可以把相关细节讲透。
-4. 提示应当引导思考，而不是直接给出答案。
-5. 每个练习都要标注它对应的 makefiletutorial.com 小节。
-6. 练习与参考答案由生成器保持同步，不要手工编辑生成的文件。
+1. The exercise must be able to run independently using the `make` that comes with the system and does not rely on third-party tools.
+2. The initial state must fail; the reference answer must pass.
+3. Each exercise only focuses on one concept, but the relevant details can be explained thoroughly.
+4. Prompts should guide thinking rather than give direct answers.
+5. Each exercise is labeled with its corresponding makefiletutorial.com section.
+6. The exercises and reference answers are synchronized by the generator. Do not manually edit the generated files.
 
-## 添加一个练习
+## Add an exercise
 
-1. 找到对应的专题规格文件 `tools/specs_<topic>.py`，如果没有就新建一个
-   （文件名必须与专题名一致）。
-2. 调用 `ex(...)` 添加规格：
+1. Find the corresponding topic specification file `tools/specs_<topic>.py`, if not, create a new one
+   (The file name must be consistent with the topic name).
+2. Call `ex(...)` to add specifications:
 
 ```python
 ex(
@@ -21,10 +21,10 @@ ex(
     slug="13_new_exercise",
     title="...",
     objective="...",
-    reference="Variables",          # 教程小节名
+    reference="Variables", # Tutorial section name
     hint="...",
     makefile="""
-target: prereq
+target:prereq
 \tcommand
 """,
     steps=[
@@ -35,7 +35,7 @@ target: prereq
 ),
 ```
 
-3. 重新生成并验证：
+3. Regenerate and verify:
 
 ```sh
 python3 tools/generate_exercises.py
@@ -45,17 +45,17 @@ python3 tools/generate_exercises.py --check
 make check-tracked
 ```
 
-`make check-tracked` 确认 `exercises/`、`solutions/`、`templates/` 下的每个文件都
-真的进了仓库。练习会故意携带 `report.d`、`blah.o` 这类看起来像构建产物的文件，
-一旦 `.gitignore` 里出现宽泛的 `*.d` / `*.o` 规则，它们就会只在本地存在、不在
-clone 里存在——本地全绿，CI 全红。CI 也会跑这一步。
+`make check-tracked` confirms that each file under `exercises/`, `solutions/`, `templates/`
+Really entered the warehouse. The exercise will intentionally carry files such as `report.d` and `blah.o` that look like build products.
+Once broad `*.d` / `*.o` rules appear in `.gitignore`, they will only exist locally and not
+Exists in clone - local is all green, CI is all red. CI will also run this step.
 
-## 规格的写法
+## How to write specifications
 
 ### Tab
 
-recipe 行必须以真正的 TAB 开头。规格是 Python 源码，直接写 TAB 既不可见
-又容易丢失，因此约定用 `\t` 转义：
+The recipe line must start with a real TAB. The specifications are Python source code, which is not visible if you write TAB directly.
+It is easy to lose, so it is agreed to use `\t` to escape:
 
 ```python
 makefile="""
@@ -64,62 +64,62 @@ hello:
 """,
 ```
 
-Python 会把它变成真正的 TAB。Makefile 里需要的字面反斜杠要写成 `\\`。
+Python will turn it into a real TAB. Literal backslashes required in the Makefile are written as `\\`.
 
 ### breaks
 
-`breaks` 是 `(正确片段, 初始片段)` 的列表，生成器把它们依次应用在正确
-内容上，得到学习者看到的初始版本。至少要有一次替换，而且替换之后必须
-让**至少一个**检查步骤失败——`./makefiling selftest` 会强制检查这一点。
+`breaks` is a list of `(correct fragments, initial fragments)`, which the generator applies in turn to the correct
+In terms of content, get the initial version that learners see. There must be at least one substitution, and the substitution must be
+Make at least one check step fail - `./makefiling selftest` will force a check for this.
 
-要改辅助文件（例如子目录里的 Makefile、C 源码）时用 `file_breaks`：
+Use `file_breaks` when you want to change auxiliary files (such as Makefile and C source code in subdirectories):
 
 ```python
-file_breaks=[("sub/Makefile", "正确片段", "初始片段")],
+file_breaks=[("sub/Makefile", "Correct Break", "Initial Break")],
 ```
 
-### 检查步骤
+### Check steps
 
-每一步是 `mk(...)`（运行 make）或 `step(cmd, ...)`（运行任意命令），
-可以指定：
+Each step is `mk(...)` (run make) or `step(cmd, ...)` (run any command),
+You can specify:
 
-| 参数 | 含义 |
+| Parameters | Meaning |
 | --- | --- |
-| `exit_code` | 期望的退出码，默认 0 |
-| `stdout` / `stdout_mode` | 对标准输出的期望和比较方式 |
-| `stderr` / `stderr_mode` | 对标准错误的期望和比较方式 |
-| `env` | 追加的环境变量 |
-| `files` | 这一步之后必须存在、且内容完全一致的文件 |
-| `missing` | 这一步之后必须不存在的文件 |
-| `description` | 这一步在报告里显示的名字 |
+| `exit_code` | Desired exit code, default 0 |
+| `stdout` / `stdout_mode` | Expectations and comparisons for standard output |
+| `stderr` / `stderr_mode` | Expectations and comparisons for standard error |
+| `env` | Additional environment variables |
+| `files` | Files that must exist after this step and have exactly the same content |
+| `missing` | Files that must not exist after this step |
+| `description` | The name of this step as it appears in the report |
 
-比较方式见 [docs/architecture.md](docs/architecture.md#匹配模式)。默认是
-`contains_lines`；优先使用 `contains` 和 `ordered_lines`，只有在确实
-需要时才用 `exact`。
+For comparison methods, see [docs/architecture.md](docs/architecture.md#matching pattern). The default is
+`contains_lines`; use `contains` and `ordered_lines` first, only when
+Use `exact` only when necessary.
 
-### 期望值必须是真实的
+### The expected value must be real
 
-写期望之前，先在 `/tmp` 下建一个临时目录，把正确内容和辅助文件放进去，
-把你打算写进 `steps` 的命令真正跑一遍，把观察到的输出抄进去。不要凭
-记忆猜 make 会打印什么——这句话在本项目里是硬性要求。
+Before writing expectations, create a temporary directory under `/tmp` and put the correct content and auxiliary files into it.
+Run the command you plan to put into `steps` and copy the observed output. Don't rely on
+Remember to guess what make will print - this sentence is a hard requirement in this project.
 
-### 确定性
+### Certainty
 
-- 不使用 `date`、`$$RANDOM`、`$$PPID` 之类会变化的输入。
-- 不使用绝对路径；工作目录会被规范化成 `<stage>`。
-- 不 `sleep`，不依赖时序。
-- 不访问网络。
-- 只操作编排目录内的文件。
+- Do not use changing inputs such as `date`, `$$RANDOM`, `$$PPID` and the like.
+- Do not use absolute paths; the working directory will be normalized to `<stage>`.
+- No `sleep`, no dependence on timing.
+- No access to the Internet.
+- Only operate files in the arrangement directory.
 
-### 时间戳必须显式指定
+### Timestamp must be specified explicitly
 
-运行器会把 staging 出来的文件统一改成很久以前的固定时间（见
-[docs/architecture.md](docs/architecture.md)），所以「配方刚写出的文件比练习
-自带的文件新」是自动成立的，不需要你操心。
+The runner will uniformly change the staging files to a fixed time long ago (see
+[docs/architecture.md](docs/architecture.md)), so "the document just written out by the recipe is better than the exercise
+The built-in file "New" is automatically established, so you don't need to worry about it.
 
-但**不要用裸 `touch` 去制造「某个文件更新了」**。上一条 recipe 刚把目标写出
-来，而有些文件系统（CI runner 就是）把时间戳量化到整秒，`touch` 和目标可能落
-在同一刻度里，make 就会认为无事可做，断言随机失败。要显式指定两个时间：
+But **don't use naked `touch` to create "a certain file has been updated"**. The previous recipe just wrote out the target
+Come, and some file systems (CI runner is) quantify the timestamp to the whole second, `touch` and the target may fall
+During the same tick, make will think there is nothing to do and the assertion will fail randomly. To specify two times explicitly:
 
 ```python
 step("touch", "-t", "202001010000", "out.txt",
@@ -128,11 +128,11 @@ step("touch", "-t", "202101010000", "b.txt",
      description="make the second prerequisite newer"),
 ```
 
-先把目标调旧，再把需要变新的文件调到更晚，两者相差一年，任何时间戳粒度下都
-不会含糊。`touch -t` 的格式是 `[[CC]YY]MMDDhhmm`；时间要落在过去，否则 make
-会报 clock skew。
+First adjust the target to the old one, and then adjust the files that need to be updated to a later date. There is a one-year difference between the two, and it will work at any time stamp granularity.
+Not vague. The format of `touch -t` is `[[CC]YY]MMDDhhmm`; the time must fall in the past, otherwise make
+Clock skew will be reported.
 
-自查有没有漏网的：
+Self-examination to see if anything has slipped through the cracks:
 
 ```sh
 python3 -c "
@@ -144,19 +144,19 @@ bad = [(d['exercise'], i) for f in glob.glob('exercises/*/*/checks.json')
 print(bad)"
 ```
 
-## 只重新生成一个专题
+## Only regenerate one topic
 
 ```sh
 python3 tools/generate_exercises.py --topic 03_variables
-./makefiling verify   --topic 03_variables
+./makefiling verify --topic 03_variables
 ./makefiling selftest --topic 03_variables
 ```
 
-`--topic` 只会导入对应的那一个规格文件，因此多个专题可以并行编写。
+`--topic` will only import the corresponding specification file, so multiple topics can be written in parallel.
 
-## 不要手工编辑的文件
+## Do not manually edit files
 
-`exercises/`、`solutions/`、`templates/`、各专题 `exercises/<topic>/README.md`
-和 `docs/curriculum.md` 都是生成产物。要修改它们，请改
-`tools/specs_*.py`，然后重新生成。CI 里的
-`python3 tools/generate_exercises.py --check` 会拒绝不一致的提交。
+`exercises/`, `solutions/`, `templates/`, each topic `exercises/<topic>/README.md`
+and `docs/curriculum.md` are generated products. To modify them, change
+`tools/specs_*.py` and then regenerate. in CI
+`python3 tools/generate_exercises.py --check` will reject inconsistent commits.

@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/04_recipe_creates_the_target",
+  "exercise": "01 syntax and essence/04 recipe creates the target",
   "title": "The recipe creates the file the target names",
   "objective": "Make the hello target write its two lines into a file called hello, so that a second make finds nothing to do.",
   "reference": "The essence of Make",
@@ -7,43 +7,43 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "both commands of the recipe run on the first make",
       "exit_code": 0,
       "stdout": "echo \"Hello, World\" > hello\necho \"This line will print if the file hello does not exist.\" >> hello",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "cat",
-        "hello"
+        "Cat",
+        "Hello"
       ],
       "description": "the file holds both lines",
       "exit_code": 0,
       "stdout": "Hello, World\nThis line will print if the file hello does not exist.",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the target now exists as a file, so make stops",
       "exit_code": 0,
       "stdout": "make: 'hello' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -51,13 +51,13 @@
   ],
   "lesson": {
     "order": 10,
-    "goal": "让 recipe 创建它声明的目标文件。",
-    "prediction": "如果 recipe 创建 hello，第二次 make 会发生什么？",
+    "goal": "Let recipe create the target file it declares.",
+    "prediction": "If recipe creates hello, what happens the second time make?",
     "hints": [
-      "目标是否最新取决于同名文件是否存在。",
-      "把两行文本写入 hello，而不是只打印到终端。",
-      "可以用 echo 和 >、>> 组合写文件。"
+      "Whether the target is up to date depends on whether a file with the same name exists.",
+      "Write two lines of text to hello instead of just printing to the terminal.",
+      "You can use echo in combination with > and >> to write files."
     ],
-    "explanation": "recipe 的副作用必须和目标名一致，否则 make 每次都只能再次尝试。"
+    "explanation": "The side effect of the recipe must match the target name, otherwise make will have to try again every time."
   }
 }

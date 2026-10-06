@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/03_prerequisite_order",
+  "exercise": "01 syntax and essence/03 prerequisite order",
   "title": "Prerequisites are built left to right",
   "objective": "Order the prerequisites of the all target so that make builds one, then two, then three.",
   "reference": "Makefile Syntax",
@@ -7,61 +7,61 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the prerequisites run in the order they are listed",
       "exit_code": 0,
       "stdout": "echo \"one\" >> order.txt\necho \"two\" >> order.txt\necho \"three\" >> order.txt\ncat order.txt\none\ntwo\nthree",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "cat",
-        "order.txt"
+        "Cat",
+        "Order.txt"
       ],
       "description": "the file records that same order",
       "exit_code": 0,
-      "stdout": "one\ntwo\nthree",
-      "stdout_mode": "ordered_lines",
+      "stdout": "One\ntwo\nthree",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-f",
-        "order.txt"
+        "Test",
+        "F",
+        "Order.txt"
       ],
       "description": "the target's own command ran last",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {
-        "order.txt": "one\ntwo\nthree\n"
+        "order.txt": "One\ntwo\nthree\n"
       },
       "missing": []
     }
   ],
   "lesson": {
     "order": 9,
-    "goal": "观察 make 按依赖顺序遍历图。",
-    "prediction": "all: one two three 时，三个 recipe 的输出顺序是什么？",
+    "goal": "Observe that make traverses the graph in dependency order.",
+    "prediction": "When all: one two three, what is the output order of the three recipes?",
     "hints": [
-      "all 的前置条件就是构建顺序的入口。",
-      "把 one、two、three 按期望顺序写在冒号右侧。",
-      "recipe 的输出顺序能帮助你验证依赖图。"
+      "The precondition of all is the entry point of the construction sequence.",
+      "Write one, two, and three to the right of the colon in the desired order.",
+      "The output order of recipes can help you verify your dependency graph."
     ],
-    "explanation": "make 会先处理前置条件，再回到目标；同层前置条件按书写顺序访问。"
+    "explanation": "make will first process the preconditions and then return to the target; preconditions at the same level are accessed in the order of writing."
   }
 }

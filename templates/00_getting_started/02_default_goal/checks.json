@@ -1,5 +1,5 @@
 {
-  "exercise": "00_getting_started/02_default_goal",
+  "exercise": "00 getting started/02 default goal",
   "title": "The first target is the default goal",
   "objective": "Order the rules so that a bare make runs the greeting, while make goodbye still runs the farewell.",
   "reference": "Running the Examples",
@@ -7,43 +7,43 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "bare make runs hello",
       "exit_code": 0,
       "stdout": "Hello, World",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "goodbye"
+        "Make",
+        "Goodbye"
       ],
       "description": "make goodbye runs the second rule",
       "exit_code": 0,
       "stdout": "Goodbye, World",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the default goal does not run the farewell too",
       "exit_code": 0,
-      "stdout": "not_contains:Goodbye",
-      "stdout_mode": "not_contains",
+      "stdout": "Not contains:goodbye",
+      "stdout_mode": "Not contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -51,13 +51,13 @@
   ],
   "lesson": {
     "order": 2,
-    "goal": "理解默认目标和显式目标的区别。",
-    "prediction": "裸 make 和 make goodbye 会分别选择哪条规则？",
+    "goal": "Understand the difference between default and explicit goals.",
+    "prediction": "Which rule will be chosen by naked make and make goodbye respectively?",
     "hints": [
-      "没有命令行目标时，make 选择读到的第一个目标。",
-      "移动整条规则时，目标名和它的 recipe 要一起移动。",
-      "让 hello 规则出现在 goodbye 之前。"
+      "When there are no command-line targets, make chooses the first target it reads.",
+      "When moving the entire rule, the target name and its recipe are moved together.",
+      "Let the hello rule appear before goodbye."
     ],
-    "explanation": "裸 make 只构建第一个目标；显式写出 goodbye 才会选择 goodbye。"
+    "explanation": "Naked make only builds the first target; explicitly writing goodbye will select goodbye."
   }
 }

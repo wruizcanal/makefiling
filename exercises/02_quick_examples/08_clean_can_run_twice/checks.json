@@ -1,5 +1,5 @@
 {
-  "exercise": "02_quick_examples/08_clean_can_run_twice",
+  "exercise": "02 quick examples/08 clean can run twice",
   "title": "clean removes what make built",
   "objective": "Add a clean target that deletes some_file and can be run again when there is nothing left to delete.",
   "reference": "Make clean",
@@ -7,78 +7,78 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "make creates the file",
       "exit_code": 0,
       "stdout": "touch some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-f",
-        "some_file"
+        "Test",
+        "F",
+        "Some file"
       ],
       "description": "the file is there to delete",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "make clean deletes it",
       "exit_code": 0,
       "stdout": "rm -f some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "some_file"
+        "Some file"
       ]
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "a second clean is harmless",
       "exit_code": 0,
       "stdout": "rm -f some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "some_file"
+        "Some file"
       ]
     }
   ],
   "lesson": {
     "order": 15,
-    "goal": "用 clean 把构建产物恢复到可重建状态。",
-    "prediction": "clean 运行两次时，第二次应该失败还是成功？",
+    "goal": "Use clean to restore the build product to a rebuildable state.",
+    "prediction": "When clean is run twice, should it fail or succeed the second time?",
     "hints": [
-      "clean 通常不产生名为 clean 的文件。",
-      "rm -f 在文件不存在时也保持成功。",
-      "clean 是动作目标，不是构建产物。"
+      "clean usually does not produce a file named clean.",
+      "rm -f continues to succeed even if the file does not exist.",
+      "clean is an action target, not a build product."
     ],
-    "explanation": "clean 负责删除产物；幂等的清理命令可以安全重复执行。"
+    "explanation": "clean is responsible for deleting artifacts; idempotent clean commands can be safely executed repeatedly."
   }
 }

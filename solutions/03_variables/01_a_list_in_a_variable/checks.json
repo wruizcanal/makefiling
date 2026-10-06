@@ -1,5 +1,5 @@
 {
-  "exercise": "03_variables/01_a_list_in_a_variable",
+  "exercise": "03 variables/01 a list in a variable",
   "title": "A list stored in a variable",
   "objective": "Keep the file names in a variable and use the same variable as the prerequisite list and inside the recipe.",
   "reference": "Variables",
@@ -7,61 +7,61 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the variable supplies prerequisites and message",
       "exit_code": 0,
       "stdout": "touch file1\ntouch file2\necho \"Look at this variable: \" file1 file2\nLook at this variable:  file1 file2\ntouch some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a second run finds the file already built",
       "exit_code": 0,
       "stdout": "make: 'some_file' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "clean removes everything the variable named",
       "exit_code": 0,
       "stdout": "rm -f file1 file2 some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "file1",
-        "file2",
-        "some_file"
+        "File1",
+        "File2",
+        "Some file"
       ]
     }
   ],
   "lesson": {
     "order": 17,
-    "goal": "用变量给同一组文件命名。",
-    "prediction": "$(files) 出现在目标行和 recipe 中时，make 会如何展开？",
+    "goal": "Use variables to name the same set of files.",
+    "prediction": "How does make expand when $(files) appears in the target line and recipe?",
     "hints": [
-      "变量定义形如 files := file1 file2。",
-      "some_file 应把 files 放在冒号右侧。",
-      "recipe 中也可以直接写 $(files)。"
+      "The variable definition is in the form files := file1 file2.",
+      "some_file should put files to the right of the colon.",
+      "You can also write $(files) directly in the recipe."
     ],
-    "explanation": "变量先展开成文本；在依赖列表中，它会成为多个文件名。"
+    "explanation": "The variable is first expanded into text; in the dependency list, it becomes multiple file names."
   }
 }

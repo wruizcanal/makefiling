@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/06_every_prerequisite_counts",
+  "exercise": "01 syntax and essence/06 every prerequisite counts",
   "title": "Every prerequisite is checked",
   "objective": "Declare both parts as prerequisites of combined.txt so that touching either one rebuilds it.",
   "reference": "The essence of Make",
@@ -7,142 +7,142 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the first run concatenates both parts",
       "exit_code": 0,
       "stdout": "cat a.txt b.txt > combined.txt",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "199001010000",
-        "a.txt",
-        "b.txt"
+        "A.txt",
+        "B.txt"
       ],
       "description": "put both parts in the past",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "200001010000",
-        "combined.txt"
+        "Combined.txt"
       ],
       "description": "and the target in between",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "with both parts older there is nothing to do",
       "exit_code": 0,
       "stdout": "make: 'combined.txt' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "201001010000",
-        "b.txt"
+        "B.txt"
       ],
       "description": "now make only the second part newer than the target",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the second prerequisite alone triggers a rebuild",
       "exit_code": 0,
       "stdout": "cat a.txt b.txt > combined.txt",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "200001010000",
-        "combined.txt"
+        "Combined.txt"
       ],
       "description": "put the target back in the past",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "200501010000",
-        "a.txt"
+        "A.txt"
       ],
       "description": "now make the first part the newer one",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "so does the first prerequisite on its own",
       "exit_code": 0,
       "stdout": "cat a.txt b.txt > combined.txt",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -150,13 +150,13 @@
   ],
   "lesson": {
     "order": 12,
-    "goal": "理解多个前置条件中的任意一个都能触发重建。",
-    "prediction": "只更新 a.txt 或只更新 b.txt，combined.txt 是否都会重建？",
+    "goal": "Understanding any of several preconditions can trigger a rebuild.",
+    "prediction": "If only a.txt is updated or only b.txt is updated, will combined.txt be rebuilt?",
     "hints": [
-      "所有依赖都写在同一个目标行的冒号右侧。",
-      "缺少 b.txt 时，make 不会知道它参与了生成。",
-      "recipe 可以继续按需要读取两个文件。"
+      "All dependencies are written to the right of the colon on the same target line.",
+      "In the absence of b.txt, make will not know that it participated in the build.",
+      "The recipe can continue to read both files as needed."
     ],
-    "explanation": "目标必须比所有前置条件都新；任何一个依赖变新都会使目标过期。"
+    "explanation": "The target must be newer than all preconditions; any new dependency will make the target out of date."
   }
 }

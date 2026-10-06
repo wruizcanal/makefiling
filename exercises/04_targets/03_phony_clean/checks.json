@@ -1,5 +1,5 @@
 {
-  "exercise": "04_targets/03_phony_clean",
+  "exercise": "04 targets/03 phony clean",
   "title": "A file that shadows clean",
   "objective": "Declare clean phony so that the stray file called clean does not make make skip the recipe.",
   "reference": "Make clean",
@@ -7,64 +7,64 @@
   "steps": [
     {
       "args": [
-        "make",
-        "some_file"
+        "Make",
+        "Some file"
       ],
       "description": "build the file that clean is supposed to remove",
       "exit_code": 0,
       "stdout": "echo \"content\" > some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "-n",
-        "clean"
+        "Make",
+        "N",
+        "Clean"
       ],
       "description": "the dry run shows the recipe and removes nothing",
       "exit_code": 0,
       "stdout": "rm -f some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {
-        "some_file": "content\n"
+        "some_file": "Content\n"
       },
       "missing": []
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "clean really runs, even though a file named clean exists",
       "exit_code": 0,
       "stdout": "rm -f some_file",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "some_file"
+        "Some file"
       ]
     }
   ],
   "lesson": {
     "order": 19,
-    "goal": "理解 .PHONY 如何声明动作目标。",
-    "prediction": "目录里已经有一个叫 clean 的文件时，make clean 会删除产物吗？",
+    "goal": "Understand how .PHONY declares action targets.",
+    "prediction": "When there is already a file called clean in the directory, will make clean delete the product?",
     "hints": [
-      "make 默认把目标名当作可能存在的文件。",
-      ".PHONY: clean 告诉 make clean 永远不是文件。",
-      "把 .PHONY 声明放在 clean 规则前后都可以。"
+      "By default, make treats the target name as a possible existing file.",
+      ".PHONY: clean tells make clean to never be a file.",
+      "You can put the .PHONY statement before or after the clean rule."
     ],
-    "explanation": ".PHONY 目标不参与文件时间戳判断，每次被请求都会执行。"
+    "explanation": "The .PHONY target does not participate in file timestamp determination and will be executed every time it is requested."
   }
 }

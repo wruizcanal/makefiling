@@ -1,5 +1,5 @@
 {
-  "exercise": "02_quick_examples/10_build_clean_build",
+  "exercise": "02 quick examples/10 build clean build",
   "title": "Build, clean, build again",
   "objective": "Complete the Makefile with a clean target that removes everything make created, so the same three recipes can run from scratch again.",
   "reference": "Make clean",
@@ -7,63 +7,63 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the first build runs all three recipes",
       "exit_code": 0,
       "stdout": "echo \"int main() { return 0; }\" > blah.c # Runs first\ncc -c blah.c -o blah.o # Runs second\ncc blah.o -o blah # Runs third",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "clean"
+        "Make",
+        "Clean"
       ],
       "description": "clean leaves the directory as it found it",
       "exit_code": 0,
       "stdout": "rm -f blah blah.o blah.c",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": [
-        "blah",
-        "blah.o",
-        "blah.c"
+        "Blah",
+        "Blah.o",
+        "Blah.c"
       ]
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the same three recipes run again from a clean tree",
       "exit_code": 0,
       "stdout": "echo \"int main() { return 0; }\" > blah.c # Runs first\ncc -c blah.c -o blah.o # Runs second\ncc blah.o -o blah # Runs third",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-x",
-        "blah"
+        "Test",
+        "X",
+        "Blah"
       ],
       "description": "the rebuilt program is executable",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -71,13 +71,13 @@
   ],
   "lesson": {
     "order": 16,
-    "goal": "完整体验 build → clean → build。",
-    "prediction": "清理后再次构建，哪些 recipe 会重新执行？",
+    "goal": "Complete experience build → clean → build.",
+    "prediction": "If you build again after cleaning, which recipes will be re-executed?",
     "hints": [
-      "clean 必须删除这组练习创建的所有产物。",
-      "先构建一次，再清理，再观察第三次。",
-      "如果有文件残留，make 会把它当作已有目标。"
+      "clean must remove all artifacts created by this set of exercises.",
+      "Build once, clean again, observe a third time.",
+      "If any files remain, make will treat them as existing targets."
     ],
-    "explanation": "clean 删除目标后，下一次 make 会重新走完整依赖链。"
+    "explanation": "After clean deletes the target, make will re-walk the entire dependency chain next time."
   }
 }

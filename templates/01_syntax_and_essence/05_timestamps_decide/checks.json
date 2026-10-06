@@ -1,5 +1,5 @@
 {
-  "exercise": "01_syntax_and_essence/05_timestamps_decide",
+  "exercise": "01 syntax and essence/05 timestamps decide",
   "title": "Timestamps decide whether to rebuild",
   "objective": "Give blah a prerequisite so that touching blah.c rebuilds it, while an older blah.c is ignored.",
   "reference": "The essence of Make",
@@ -7,109 +7,109 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the first run builds blah from blah.c",
       "exit_code": 0,
       "stdout": "cp blah.c blah",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "test",
-        "-f",
-        "blah"
+        "Test",
+        "F",
+        "Blah"
       ],
       "description": "the recipe created the file blah",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "200001010000",
-        "blah.c"
+        "Blah.c"
       ],
       "description": "give the source a fixed timestamp",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "201001010000",
-        "blah"
+        "Blah"
       ],
       "description": "and the target a newer one",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "an older prerequisite does not force a rebuild",
       "exit_code": 0,
       "stdout": "make: 'blah' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "touch",
-        "-t",
+        "Touch",
+        "T",
         "199001010000",
-        "blah"
+        "Blah"
       ],
       "description": "now put the target in the past",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "a newer prerequisite forces a rebuild",
       "exit_code": 0,
       "stdout": "cp blah.c blah",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -117,13 +117,13 @@
   ],
   "lesson": {
     "order": 11,
-    "goal": "用时间戳理解增量构建。",
-    "prediction": "源文件比目标旧时会重建吗？源文件更新后呢？",
+    "goal": "Understanding incremental builds with timestamps.",
+    "prediction": "Will the source file be rebuilt if it is older than the target? What about after the source file is updated?",
     "hints": [
-      "目标需要一个源文件作为前置条件。",
-      "make 只关心修改时间的先后，不理解文件内容。",
-      "先确保 blah.c 更旧，再让它变新观察两次结果。"
+      "The target requires a source file as a prerequisite.",
+      "make only cares about the modification time and does not understand the file content.",
+      "First make sure blah.c is older, then make it newer and observe the results twice."
     ],
-    "explanation": "Make 的默认增量策略是：目标缺失或任一依赖更新，就重建目标。"
+    "explanation": "Make's default incremental strategy is: if the target is missing or any dependency is updated, rebuild the target."
   }
 }

@@ -1,111 +1,111 @@
 # makefiling
 
-`makefiling` 是一套面向 GNU Make 的动手练习集，逐节覆盖
-[makefiletutorial.com](https://makefiletutorial.com/) 的全部内容。
+`makefiling` is a collection of hands-on exercises for GNU Make, covering section by section
+All contents of [makefiletutorial.com](https://makefiletutorial.com/).
 
-每个练习都是一个能独立运行的目录，里面有一个 `Makefile` 和一个
-`checks.json`。初始的 `Makefile` 故意留有缺失的规则、写错的变量或
-不成立的依赖关系；你需要修改它，让 `./makefiling run` 通过。
+Each exercise is a directory that can be run independently, with a `Makefile` and a
+`checks.json`. The initial `Makefile` intentionally had missing rules, miswritten variables, or
+Broken dependency; you need to modify it so that `./makefiling run` will pass.
 
-第一次学习建议从 [基础路线](docs/basics.md) 开始：它把前 20 题串成一条
-“预测 → 修改 → 观察 → 解释”的主线，再用 [小项目](docs/first-project.md)
-把概念连起来。
+It is recommended to start with the [Basic Route](docs/basics.md) for your first study: it strings the first 20 questions into one
+The main line of "predict → modify → observe → explain", then use [small project](docs/first-project.md)
+Connect concepts.
 
-## 练习专题
+## Practice Topics
 
-共 **13 个专题、177 个练习**，覆盖教程的主要可操作内容；Getting Started
-还提供了替代工具和 Make 实现背景的阅读链接。
+A total of **13 topics and 177 exercises**, covering the main operational content of the tutorial; Getting Started
+Links to reading about alternative tools and Make implementation background are also provided.
 
-| 专题 | 练习数 | 对应的教程小节 | 目录 |
+| Topics | Number of exercises | Corresponding tutorial sections | Table of Contents |
 | --- | ---: | --- | --- |
-| Getting Started | 6 | Why do Makefiles exist?、Running the Examples（另含背景阅读） | [`00_getting_started`](exercises/00_getting_started/) |
-| Makefile Syntax and the Essence of Make | 11 | Makefile Syntax、The essence of Make | [`01_syntax_and_essence`](exercises/01_syntax_and_essence/) |
-| More Quick Examples | 10 | More quick examples、Make clean | [`02_quick_examples`](exercises/02_quick_examples/) |
-| Variables | 14 | Variables、Automatic Variables | [`03_variables`](exercises/03_variables/) |
-| Targets | 12 | Targets、The all target、Multiple targets | [`04_targets`](exercises/04_targets/) |
-| Automatic Variables and Wildcards | 13 | * Wildcard、% Wildcard、Automatic Variables | [`05_wildcards_and_automatic_variables`](exercises/05_wildcards_and_automatic_variables/) |
-| Fancy Rules | 16 | Implicit Rules、Static Pattern Rules、Static Pattern Rules and Filter、Pattern Rules、Double-Colon Rules | [`06_fancy_rules`](exercises/06_fancy_rules/) |
-| Commands and Execution | 22 | Command Echoing/Silencing、Command Execution、Default Shell、Double dollar sign、Error handling with -k, -i, and -、Interrupting or killing make、Recursive use of make、Export, environments, and recursive make、Arguments to make | [`07_commands_and_execution`](exercises/07_commands_and_execution/) |
-| Variables Pt. 2 | 16 | Flavors and modification、Command line arguments and override、List of commands and define、Target-specific variables、Pattern-specific variables | [`08_variables_pt2`](exercises/08_variables_pt2/) |
+| Getting Started | 6 | Why do Makefiles exist?, Running the Examples (including background reading) | [`00_getting_started`](exercises/00_getting_started/) |
+| Makefile Syntax and the Essence of Make | 11 | Makefile Syntax, The essence of Make | [`01_syntax_and_essence`](exercises/01_syntax_and_essence/) |
+| More Quick Examples | 10 | More quick examples, Make clean | [`02_quick_examples`](exercises/02_quick_examples/) |
+| Variables | 14 | Variables, Automatic Variables | [`03_variables`](exercises/03_variables/) |
+| Targets | 12 | Targets, The all target, Multiple targets | [`04_targets`](exercises/04_targets/) |
+| Automatic Variables and Wildcards | 13 | * Wildcard, % Wildcard, Automatic Variables | [`05_wildcards_and_automatic_variables`](exercises/05_wildcards_and_automatic_variables/) |
+| Fancy Rules | 16 | Implicit Rules, Static Pattern Rules, Static Pattern Rules and Filter, Pattern Rules, Double-Colon Rules | [`06_fancy_rules`](exercises/06_fancy_rules/) |
+| Commands and Execution | 22 | Command Echoing/Silencing, Command Execution, Default Shell, Double dollar sign, Error handling with -k, -i, and -, Interrupting or killing make, Recursive use of make, Export, environments, and recursive make, Arguments to make | [`07_commands_and_execution`](exercises/07_commands_and_execution/) |
+| Variables Pt. 2 | 16 | Flavors and modification, Command line arguments and override, List of commands and define, Target-specific variables, Pattern-specific variables | [`08_variables_pt2`](exercises/08_variables_pt2/) |
 | Conditional Part of Makefiles | 14 | Conditional if/else、Check if a variable is empty、Check if a variable is defined、$(MAKEFLAGS) | [`09_conditionals`](exercises/09_conditionals/) |
-| Functions | 20 | First Functions、String Substitution、The foreach function、The if function、The call function、The shell function、The filter function | [`10_functions`](exercises/10_functions/) |
-| Other Features | 14 | Include Makefiles、The vpath Directive、Multiline、.phony、.delete_on_error | [`11_other_features`](exercises/11_other_features/) |
+| Functions | 20 | First Functions, String Substitution, The foreach function, The if function, The call function, The shell function, The filter function | [`10_functions`](exercises/10_functions/) |
+| Other Features | 14 | Include Makefiles, The vpath Directive, Multiline, .phony, .delete_on_error | [`11_other_features`](exercises/11_other_features/) |
 | Makefile Cookbook | 9 | Makefile Cookbook | [`12_cookbook`](exercises/12_cookbook/) |
 
-每个专题的 `README.md` 会列出该专题的练习清单和顺序；逐题对照表见 [docs/curriculum.md](docs/curriculum.md)。
+The `README.md` of each topic will list the list and sequence of exercises for that topic; see [docs/curriculum.md](docs/curriculum.md) for a topic-by-topic comparison table.
 
-## 特性
+## Features
 
-- **完整覆盖教程**：从第一条规则、变量、通配符，到模式规则、条件、
-  函数和结尾的 cookbook，教程的每一个小节都有对应练习。
-- **契约驱动**：每个练习的验收条件写在 `checks.json` 里——运行哪些命令、
-  期望的退出码、标准输出、以及命令结束后磁盘上该有哪些文件。运行器
-  只是这个契约的解释器。
-- **隔离运行**：练习会被复制到 `build/makefiling/` 再执行，因此 `make`
-  产生的 `.o`、可执行文件和中间文件不会污染 `exercises/`，
-  不会额外污染 git；`git status` 只会反映你对练习文件本身的编辑。
-- **自带 CLI**：列出、运行、提示、查看答案、重置进度和监听文件变化。
-- **适合初学者**：`./makefiling start` 提供 20 题基础路线，提示按级别展开，
-  失败时保留工作目录并显示 make 的原始诊断。
-- **几乎零依赖**：只需要 `make` 和 Python 3（读取 `cat`、`touch`、
-  `grep` 等标准 Unix 工具；涉及编译的练习额外需要 `cc`）。
-- **答案与初始模板分离**：`solutions/` 保存参考答案，`templates/`
-  保存原始练习，`exercises/` 是你实际修改的目录。
-- **教程对照**：每个练习都标注它对应的教程小节，可以和原文对着读。
-- **现代工程结构**：Makefile、CMake Presets、CTest、CI、Docker、
-  EditorConfig。
+- **Complete coverage tutorial**: from the first rule, variables, wildcards, to pattern rules, conditions,
+  Functions and the cookbook at the end, each section of the tutorial has corresponding exercises.
+- **Contract-driven**: The acceptance conditions of each exercise are written in `checks.json` - which commands to run,
+  The expected exit code, standard output, and what files should be on disk after the command ends. runner
+  Just an interpreter of this contract.
+- **Isolated Run**: Exercises will be copied to `build/makefiling/` and then executed, so `make`
+  The generated `.o`, executables and intermediate files do not pollute `exercises/`,
+  No additional pollution to git; `git status` will only reflect your edits to the exercise file itself.
+- **Comes with CLI**: list, run, prompt, view answers, reset progress and listen for file changes.
+- **Suitable for beginners**: `./makefiling start` provides a basic route of 20 questions, with prompts expanded by level.
+  Preserves the working directory on failure and displays make's original diagnostics.
+- **Almost zero dependencies**: only requires `make` and Python 3 (read `cat`, `touch`,
+  Standard Unix tools such as `grep`; additional `cc` is required for exercises involving compilation).
+- **Answers are separated from initial templates**: `solutions/` Save reference answers, `templates/`
+  Save the original exercise, `exercises/` is the directory where you actually modified it.
+- **Tutorial Comparison**: Each exercise is marked with its corresponding tutorial section, which can be read against the original text.
+- **Modern Engineering Structure**: Makefile, CMake Presets, CTest, CI, Docker,
+  EditorConfig.
 
-## 快速开始
+## Quick start
 
-### 环境要求
+### Environmental requirements
 
-- GNU Make 3.81+ 或 4.x
-- Python 3.8+
-- `cc`（只有涉及编译 C 的练习需要；GCC 或 Clang 均可）
+- GNU Make 3.81+ or 4.x
+-Python 3.8+
+- `cc` (required only for exercises involving compiling C; either GCC or Clang will do)
 
-Linux 上通常只需要：
+On Linux you usually only need:
 
 ```sh
 sudo apt install build-essential python3
 ```
 
-### 运行
+### Run
 
 ```sh
-# 查看全部练习
+# View all exercises
 ./makefiling list
 
-# 开始基础路线
+# Start basic route
 ./makefiling start
 ./makefiling list --basic
 
-# 运行下一个未完成的练习
+# Run the next unfinished exercise
 ./makefiling run
 
-# 运行指定练习（支持完整 ID、目录名或唯一后缀）
+#Run the specified exercise (supports full ID, directory name or unique suffix)
 ./makefiling run 08_variables_pt2/01_recursive_vs_simply_expanded
 ./makefiling run 01_first_rule
 
-# 查看提示
+# View tips
 ./makefiling hint 01_first_rule --level 1
 
-# 查看这个练习要检查哪些东西
+# See what is being checked for this exercise
 ./makefiling hint 01_first_rule --steps
 
-# 查看参考答案
+# View reference answers
 ./makefiling solution 01_first_rule
 
-# 直接应用答案（会覆盖你的练习文件）
+#Apply answers directly (will overwrite your exercise file)
 ./makefiling solution 01_first_rule --apply
 
-# 恢复初始练习
+# Resume initial practice
 ./makefiling reset 01_first_rule
 
-# 监听文件变化，保存后自动重跑
+# Monitor file changes and automatically rerun after saving
 ./makefiling watch 01_first_rule
 ```
 
-也可以使用 Makefile：
+You can also use Makefile:
 
 ```sh
 make list
@@ -117,67 +117,67 @@ make doctor
 make clean
 ```
 
-## 学习流程
+## Learning process
 
-1. 阅读 `exercises/<topic>/README.md` 和 `Makefile` 顶部的目标与提示。
-2. 修改 `exercises/<topic>/<slug>/Makefile`（必要时也修改同目录下的
-   辅助文件），运行 `./makefiling run <exercise>`。
-3. 如果卡住，先用 `./makefiling hint <exercise> --level 1`，再仔细读 make 的
-   stderr；需要时逐级提高到 `--level 3`。失败时运行器会打印它保留的工作
-   目录和可直接复制的重试命令，可以进去手工复现。
-4. 通过后继续下一个练习；进度记录在 `.makefiling/progress.json`。
-5. 完成一个专题后，对照 `docs/knowledge-map.md` 检查是否理解相关概念。
-6. 最后运行 `./makefiling verify` 验证所有参考答案；`./makefiling selftest`
-   检查的是仓库中的原始模板和参考答案，不会因为你已经完成某道题而失败。
+1. Read the goals and tips at the top of `exercises/<topic>/README.md` and `Makefile`.
+2. Modify `exercises/<topic>/<slug>/Makefile` (if necessary, also modify the
+   auxiliary files), run `./makefiling run <exercise>`.
+3. If you get stuck, first use `./makefiling hint <exercise> --level 1`, and then read the instructions of make carefully.
+   stderr; gradually increase to `--level 3` when necessary. On failure the runner prints the work it retained
+   Directory and retry commands that can be directly copied can be entered and reproduced manually.
+4. Continue to the next exercise after passing; progress is recorded in `.makefiling/progress.json`.
+5. After completing a topic, check whether you understand the relevant concepts by referring to `docs/knowledge-map.md`.
+6. Finally run `./makefiling verify` to verify all reference answers; `./makefiling selftest`
+   What is checked is the original template and reference answer in the warehouse, and it will not fail because you have already completed a certain question.
 
-有些练习一开始会**直接失败**，有些能跑但输出不对，还有一些会报
-`missing separator`——这是刻意的：Makefile 的制表符规则本身就是教程的
-第一课。
+Some exercises will **directly fail** at the beginning, some can run but the output is wrong, and some will report
+`missing separator` - this is intentional: the Makefile's tab rules are tutorials themselves
+Lesson one.
 
-## 项目结构
+## Project structure
 
 ```text
 .
-├── makefiling                   # 零依赖 Python CLI
-├── exercises/                 # 你要修改的练习
-│   ├── 00_getting_started/
-│   │   ├── README.md
-│   │   └── 01_first_rule/
-│   │       ├── Makefile       # 练习本体
-│   │       └── checks.json    # 验收契约
-│   └── ...
-├── solutions/                 # 参考答案（与 exercises 同结构）
-├── templates/                 # 原始练习，用于 ./makefiling reset
+├── makefiling # Zero dependency Python CLI
+├── exercises/ # the exercises you want to modify
+│ ├── 00_getting_started/
+│ │ ├── README.md
+│ │ └── 01_first_rule/
+│ │ ├── Makefile # Practice ontology
+│ │ └── checks.json # Acceptance contract
+│ └── ...
+├── solutions/ # Reference answers (same structure as exercises)
+├── templates/ # Original exercise for ./makefiling reset
 ├── tools/
-│   ├── generate_exercises.py  # 生成器
-│   ├── spec.py                # 规格数据结构与检查步骤 DSL
-│   └── specs_*.py             # 每个专题一个规格文件
+│ ├── generate_exercises.py # Generator
+│ ├── spec.py # Specification data structure and checking steps DSL
+│ └── specs_*.py # One specification file for each topic
 ├── docs/
-│   ├── basics.md              # 面向小白的 20 题基础路线
-│   ├── first-project.md       # 用 cookbook 完成一个小项目
-│   ├── architecture.md        # 生成器、运行器、契约设计
-│   ├── curriculum.md          # 按教程小节列出全部练习
-│   └── knowledge-map.md       # 按 GNU Make 知识领域列出覆盖范围
+│ ├── basics.md # 20-question basic route for beginners
+│ ├── first-project.md # Use cookbook to complete a small project
+│ ├── architecture.md # Generator, runner, contract design
+│ ├── curriculum.md # List all exercises by tutorial section
+│ └── knowledge-map.md # List coverage by GNU Make knowledge area
 ├── CMakeLists.txt
 ├── CMakePresets.json
 ├── Makefile
 └── Dockerfile
 ```
 
-## 构建方式
+## Build method
 
-### 方式一：CLI + 按需运行（推荐）
+### Method 1: CLI + run on demand (recommended)
 
-`./makefiling` 只依赖 Python 标准库。它在需要时把练习复制到
-`build/makefiling/` 的独立临时目录并执行契约中的命令。这种方式适合日常学习，
-也允许多个检查命令同时运行。
+`./makefiling` only relies on the Python standard library. It copies exercises to
+A separate temporary directory in `build/makefiling/` and execute the commands in the contract. This method is suitable for daily learning,
+Also allows multiple check commands to be run simultaneously.
 
 ```sh
 ./makefiling doctor
 ./makefiling verify
 ```
 
-### 方式二：Makefile
+### Method 2: Makefile
 
 ```sh
 make verify
@@ -185,55 +185,55 @@ make selftest
 make check-generated
 ```
 
-### 方式三：CMake + CTest
+### Method 3: CMake + CTest
 
-每个参考答案都会注册成一个 CTest 测试：
+Each reference answer is registered as a CTest test:
 
 ```sh
 cmake --preset default
 ctest --preset default
 ```
 
-这个项目没有需要编译的产品，所以 `cmake --build` 是空的；CTest 测试
-直接调用 `./makefiling verify <exercise>`。
+This project has no products that need to be compiled, so `cmake --build` is empty; CTest test
+Call `./makefiling verify <exercise>` directly.
 
-### 方式四：Docker
+### Method 4: Docker
 
 ```sh
 docker build -t makefiling .
 docker run --rm -it -v "$PWD:/makefiling" makefiling ./makefiling list
 ```
 
-## 关于 make 版本
+## About make version
 
-教程以 **GNU Make** 为准，它在 Linux 和 macOS 上都是标准实现。本项目的
-练习在 GNU Make 3 和 4 上都能通过，CI 使用 Ubuntu 自带的版本。
+The tutorial is based on **GNU Make**, which is the standard implementation on Linux and macOS. of this project
+The exercises can be passed on both GNU Make 3 and 4. CI uses the version that comes with Ubuntu.
 
-BSD make 和 nmake 的语法与本教程不同，本项目的练习不适用于它们。
+The syntax of BSD make and nmake is different from this tutorial, and the exercises in this project do not apply to them.
 
-## 添加新练习
+## Add new exercise
 
-练习由 `tools/specs_*.py` 中的规格生成。每个规格包含正确的 `Makefile`、
-一组检查步骤，以及一组「正确片段 → 初始片段」的替换。这样练习和答案
-不会不同步。
+Exercises are generated from specifications in `tools/specs_*.py`. Each specification contains the correct `Makefile`,
+A set of checking steps, and a set of "correct fragment → initial fragment" replacements. Such exercises and answers
+Will not be out of sync.
 
 ```sh
-# 编辑 tools/specs_*.py
+# Edit tools/specs_*.py
 python3 tools/generate_exercises.py
 ./makefiling verify
 ./makefiling selftest
 python3 tools/generate_exercises.py --check
 ```
 
-详见 [CONTRIBUTING.md](CONTRIBUTING.md) 和
-[docs/architecture.md](docs/architecture.md)。
+See [CONTRIBUTING.md](CONTRIBUTING.md) and
+[docs/architecture.md](docs/architecture.md).
 
-## 许可
+## License
 
-项目代码使用 MIT License，见 [LICENSE](LICENSE)。
+The project code uses the MIT License, see [LICENSE](LICENSE).
 
-## 参考
+## Reference
 
-- [makefiletutorial.com](https://makefiletutorial.com/) —— 本项目的选题来源
+- [makefiletutorial.com](https://makefiletutorial.com/) —— The source of the topic for this project
 - [GNU Make Manual](https://www.gnu.org/software/make/manual/)
-- [rustlings](https://github.com/rust-lang/rustlings) —— 练习集的形式来源
+- [rustlings](https://github.com/rust-lang/rustlings) - the formal source of the exercise set

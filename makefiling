@@ -428,7 +428,7 @@ def run_step(step: Step, stage: Path, output: list[str] | None = None) -> list[s
         if result.stderr and not stderr_mismatch:
             problems.extend(show("stderr", result.stderr, stage=stage))
         if "missing separator" in result.stderr:
-            problems.append("    提示：检查命令行开头的缩进；recipe 需要真正的 Tab，而不是空格。")
+            problems.append("       Tip: Check the indentation at the beginning of the command line; recipes require real tabs, not spaces.")
     elif output is not None:
         if result.stdout:
             output.extend(show("stdout", result.stdout, stage=stage))
@@ -459,7 +459,7 @@ def run_contract(exercise: Exercise, source: Path, verbose: bool = False) -> tup
             command = shlex.join(["env", *[f"{k}={v}" for k, v in {**BASE_ENV, **step.env}.items()], *step.args])
             report.append(f"    inspect: cd {shlex.quote(str(stage))}")
             report.append(f"    retry this step: {command}")
-            report.append("    注意：这里保留的是失败后的状态。重新运行 makefiling 可从干净副本重放全部步骤。")
+            report.append("     Note: What is retained here is the status after failure. Rerun makefiling to replay all steps from a clean copy.")
             return False, report, stage
         if verbose:
             report.append(f"    step {index}: ok  {label}")
@@ -484,35 +484,35 @@ def print_exercise(exercise: Exercise, completed: set[str], verbose: bool = Fals
 
 
 def show_learning_task(exercise: Exercise) -> None:
-    print(f"修改文件：{exercise.path.relative_to(ROOT)}/Makefile（以及题目要求的辅助文件）")
+    print(f"Modify files：{exercise.path.relative_to(ROOT)}/Makefile（and supporting documents required by the topic）")
     if exercise.lesson:
-        print(f"目标：{exercise.lesson['goal']}")
-        print(f"先预测：{exercise.lesson['prediction']}")
+        print(f"Target：{exercise.lesson['goal']}")
+        print(f"Predict first：{exercise.lesson['prediction']}")
     else:
         print(f"objective: {exercise.objective}")
-    print(f"提示：./makefiling hint {exercise.ident}")
+    print(f"Hint：./makefiling hint {exercise.ident}")
 
 
 def show_success(exercise: Exercise, basic: bool = False) -> None:
     if exercise.lesson:
-        print(f"理解检查：{exercise.lesson['explanation']}")
-    print("下一题：./makefiling next" + (" --basic" if basic else ""))
+        print(f"Comprehension check：{exercise.lesson['explanation']}")
+    print("Next question：./makefiling next" + (" --basic" if basic else ""))
 
 
 def completed_message(basic: bool = False) -> None:
     if basic:
-        print(green("基础路线已完成。请用 docs/first-project.md 的小项目检验能否独立运用。"))
+        print(green("The basic route is complete. Please use the small project in docs/first-project.md to test whether it can be used independently."))
     else:
-        print(green("All exercises are complete. 用 ./makefiling run --all 复查你的解答。"))
+        print(green("All exercises are complete. Use ./makefiling run --all to review your solution."))
 
 
 def command_start(args: argparse.Namespace) -> int:
     args.basic = True
     args.topic = None
     args.exercise = None
-    print("欢迎来到 makefiling。先完成 20 题基础路线，再按需要学习进阶专题。")
-    print("学习方式：预测会发生什么 → 修改文件 → 观察结果 → 解释原因。")
-    print("基础模型与路线：docs/basics.md；小项目：docs/first-project.md\n")
+    print("Welcome to makefiling. First complete the 20 basic exercises, then learn advanced topics as needed.")
+    print("Learning approach: Predict what will happen → Modify files → Observe results → Explain reasons.")
+    print("Basic model and route: docs/basics.md; Small project: docs/first-project.md\n")
     return command_next(args)
 
 
@@ -544,8 +544,8 @@ def command_next(args: argparse.Namespace) -> int:
         return 0
     print_exercise(exercise, load_progress(), verbose=True)
     show_learning_task(exercise)
-    print(f"运行：./makefiling run {exercise.ident}" + (" --basic" if args.basic else ""))
-    print(f"保存后自动检查：./makefiling watch {exercise.ident}" + (" --basic" if args.basic else ""))
+    print(f"Run：./makefiling run {exercise.ident}" + (" --basic" if args.basic else ""))
+    print(f"Auto-check after saving：./makefiling watch {exercise.ident}" + (" --basic" if args.basic else ""))
     return 0
 
 
@@ -609,11 +609,11 @@ def command_hint(args: argparse.Namespace) -> int:
     if exercise.reference:
         print(f"reference: {exercise.reference}")
     if exercise.lesson:
-        print(f"先预测：{exercise.lesson['prediction']}")
+        print(f"Predict first: {exercise.lesson['prediction']}")
         for index, hint in enumerate(exercise.lesson['hints'][:args.level], 1):
-            print(f"提示 {index}：{hint}")
+            print(f"Hint {index}: {hint}")
         if args.level < 3:
-            print(f"需要更具体的提示：./makefiling hint {exercise.ident} --level {args.level + 1}")
+            print(f"Need more specific hints: ./makefiling hint {exercise.ident} --level {args.level + 1}")
     else:
         print(f"hint: {exercise.hint}")
     if args.steps:
@@ -650,7 +650,7 @@ def command_solution(args: argparse.Namespace) -> int:
         stage_tree(exercise.solution_root, exercise.path)
         record_result(exercise, False)
         print(green(f"applied solution to {exercise.path.relative_to(ROOT)}"))
-        print(f"读懂改动后运行 ./makefiling run {exercise.ident} 验证；应用答案本身不计为通过。")
+        print(f"Read the changes and run ./makefiling run {exercise.ident} to verify; applying the solution itself does not count as passing.")
         return 0
     for path in sorted(exercise.solution_root.rglob("*")):
         if not path.is_file() or path.name == "checks.json":
@@ -802,7 +802,7 @@ def command_clean(args: argparse.Namespace) -> int:
 
 def command_generate(args: argparse.Namespace) -> int:
     sys.path.insert(0, str(ROOT / "tools"))
-    import generate_exercises
+    import generate_exercises # type: ignore
 
     argv: list[str] = []
     if args.topic:

@@ -1,5 +1,5 @@
 {
-  "exercise": "00_getting_started/03_essence_target_file",
+  "exercise": "00 getting started/03 essence target file",
   "title": "A target and a file with the same name",
   "objective": "Make the hello target create a file called hello, so that a second make reports it is already up to date.",
   "reference": "The essence of Make",
@@ -7,43 +7,43 @@
   "steps": [
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the first run executes the recipe",
       "exit_code": 0,
       "stdout": "echo \"Hello, World\" > hello",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "cat",
-        "hello"
+        "Cat",
+        "Hello"
       ],
       "description": "the recipe created the file",
       "exit_code": 0,
       "stdout": null,
-      "stdout_mode": "contains_lines",
+      "stdout_mode": "Contains lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make"
+        "Make"
       ],
       "description": "the second run has nothing to do",
       "exit_code": 0,
       "stdout": "make: 'hello' is up to date.",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -51,13 +51,13 @@
   ],
   "lesson": {
     "order": 3,
-    "goal": "观察目标名如何对应磁盘上的文件。",
-    "prediction": "第一次 make 后，第二次 make 为什么不再执行 echo？",
+    "goal": "Observe how the target names correspond to files on disk.",
+    "prediction": "After the first make, why does the second make no longer execute echo?",
     "hints": [
-      "make 通过文件系统判断 hello 是否已经存在。",
-      "recipe 必须真的创建名为 hello 的文件。",
-      "把 echo 的输出重定向到 hello。"
+      "make determines whether hello already exists through the file system.",
+      "The recipe must actually create a file named hello.",
+      "Redirect the output of echo to hello."
     ],
-    "explanation": "目标文件存在且没有更晚的前置条件时，make 认为目标已经最新。"
+    "explanation": "When the target file exists and there are no later preconditions, make considers the target to be up to date."
   }
 }

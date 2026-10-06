@@ -1,5 +1,5 @@
 {
-  "exercise": "00_getting_started/06_beyond_compilation",
+  "exercise": "00 getting started/06 beyond compilation",
   "title": "Make is not only for compilers",
   "objective": "Chain two non-compilation targets so that make builds a report file before printing it.",
   "reference": "Why do Makefiles exist?",
@@ -7,60 +7,60 @@
   "steps": [
     {
       "args": [
-        "make",
-        "report"
+        "Make",
+        "Report"
       ],
       "description": "the count is printed after the report is built",
       "exit_code": 0,
       "stdout": "3",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "cat",
-        "summary.txt"
+        "Cat",
+        "Summary.txt"
       ],
       "description": "the intermediate file holds the line count",
       "exit_code": 0,
       "stdout": "3",
-      "stdout_mode": "ordered_lines",
+      "stdout_mode": "Ordered lines",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "report"
+        "Make",
+        "Report"
       ],
       "description": "re-running still prints the report",
       "exit_code": 0,
       "stdout": "3",
-      "stdout_mode": "contains",
+      "stdout_mode": "Contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
     },
     {
       "args": [
-        "make",
-        "report"
+        "Make",
+        "Report"
       ],
       "description": "summary.txt is up to date, so it is not regenerated",
       "exit_code": 0,
-      "stdout": "grep -c",
-      "stdout_mode": "not_contains",
+      "stdout": "grab -c",
+      "stdout_mode": "Not contains",
       "stderr": null,
-      "stderr_mode": "contains",
+      "stderr_mode": "Contains",
       "env": {},
       "files": {},
       "missing": []
@@ -68,13 +68,13 @@
   ],
   "lesson": {
     "order": 6,
-    "goal": "把 make 看成依赖图执行器，而不只是编译器包装器。",
-    "prediction": "make report 时，summary.txt 和 report 的顺序是什么？",
+    "goal": "Think of make as a dependency graph executor, not just a compiler wrapper.",
+    "prediction": "When making report, what is the order of summary.txt and report?",
     "hints": [
-      "report 的 recipe 会读取 summary.txt，所以 report 应依赖它。",
-      "summary.txt 又依赖 names.txt。",
-      "把依赖关系写在冒号右侧，recipe 只负责动作。"
+      "The report recipe reads summary.txt, so report should rely on it.",
+      "summary.txt in turn depends on names.txt.",
+      "Write dependencies on the right side of the colon, recipe is only responsible for actions."
     ],
-    "explanation": "make 先递归构建前置条件，再执行目标 recipe；任何命令都可以成为 recipe。"
+    "explanation": "make recursively builds preconditions before executing the target recipe; any command can become a recipe."
   }
 }
